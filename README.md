@@ -1,7 +1,5 @@
 # AI/ML Project – Week 1 and Week 2
 
-## Briefly Mention the Improvisations Done by You:
-
 - Improved model accuracy using better preprocessing  
 - Added error handling for invalid image uploads  
 - Enhanced UI design in Streamlit  
