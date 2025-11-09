@@ -13,7 +13,7 @@
 - Source: [PlantVillage Dataset](https://www.kaggle.com/datasets/emmarex/plantdisease)  
 - A small subset is included in the `dataset/` folder for demo purposes.  
 - The dataset contains 4 classes: Healthy, Disease A (Spots), Disease B (Yellow Patches), and Disease C (Brown Edges)
-- Each class has 8 sample images (32 total images) for lightweight training and testing
+
 
 ## GitHub Repository Link for Week 2 Milestone (Project Source Code):
 
