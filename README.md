@@ -10,7 +10,7 @@
 
 ## GitHub Repository Link for Week 2 Milestone (Project Source Code):
 
-[Paste Your GitHub Repo Link Here]
+https://github.com/Manishnagda/week-1-and-week-2
 
 ## How to Run:
 
