@@ -38,6 +38,8 @@ Thumbs.db
 .streamlit/
 
 # Model files (too large for GitHub)
+# For Streamlit Cloud deployment, you may need to include model.h5
+# Comment out the lines below if deploying to Streamlit Cloud
 model.h5
 model/
 *.h5

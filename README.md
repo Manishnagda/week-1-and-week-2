@@ -38,6 +38,33 @@ This is an AI-powered plant disease detection system that uses Convolutional Neu
 
 https://github.com/Manishnagda/week-1-and-week-2
 
+## Deploy to Streamlit Cloud
+
+### Quick Deployment Steps
+
+1. **Prepare Repository**
+   - Ensure `app.py`, `requirements.txt`, and `class_names.txt` are in the repo
+   - For model file: Either include `model.h5` in repo or use cloud storage
+
+2. **Deploy on Streamlit Cloud**
+   - Go to https://share.streamlit.io/
+   - Sign in with GitHub
+   - Click "New app"
+   - Select repository: `Manishnagda/week-1-and-week-2`
+   - Main file: `app.py`
+   - Click "Deploy!"
+
+3. **Your App Will Be Live**
+   - URL format: `https://your-app-name.streamlit.app`
+   - Share this URL to access your app online
+
+**Note:** For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md)
+
+**Important:** If model file is too large (>100MB), consider:
+- Using Git LFS for large files
+- Uploading model to cloud storage and downloading in app
+- Using model quantization to reduce size
+
 ## Setup Instructions
 
 ### Prerequisites
