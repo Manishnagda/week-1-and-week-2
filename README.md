@@ -38,59 +38,6 @@ This is an AI-powered plant disease detection system that uses Convolutional Neu
 
 https://github.com/Manishnagda/week-1-and-week-2
 
-
-### Prerequisites
-
-- Python 3.8 or higher
-- pip package manager
-- (Optional) Kaggle API credentials for downloading dataset
-
-### Step 1: Clone the Repository
-
-```bash
-git clone https://github.com/Manishnagda/week-1-and-week-2.git
-cd week-1-and-week-2
-```
-
-### Step 2: Install Dependencies
-
-Create a virtual environment (recommended):
-
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-Install required packages:
-
-```bash
-pip install -r requirements.txt
-```
-
-### Step 3: Dataset Setup
-
-The project uses the PlantVillage dataset. You have two options:
-
-**Option A: Use Existing Dataset**
-- If you already have the PlantVillage dataset, place it in the `PlantVillage/PlantVillage/` folder
-- The dataset should be organized by class folders (e.g., `Tomato_healthy/`, `Potato___Early_blight/`, etc.)
-
-**Option B: Download Dataset**
-- Download from [Kaggle PlantVillage Dataset](https://www.kaggle.com/datasets/emmarex/plantdisease)
-- Extract and place in `PlantVillage/PlantVillage/` folder
-
-**Option C: Generate Synthetic Data (for testing)**
-- If dataset is not available, the training script will automatically generate synthetic data
-- Or run: `python create_dataset.py`
-
-### Step 4: Train the Model
-
-Train the CNN model on the PlantVillage dataset:
-
-```bash
-python train_model.py
-```
-
 This will:
 - Load images from the PlantVillage dataset
 - Train a CNN model with data augmentation
@@ -100,19 +47,7 @@ This will:
 
 **Note:** Training may take 10-30 minutes depending on your hardware and dataset size.
 
-### Step 5: Run the Streamlit Web Application
 
-Start the web app:
-
-```bash
-streamlit run app.py
-```
-
-The app will open in your default web browser at `http://localhost:8501`
-
-**Alternative:** You can also run `streamlit run main.py` (both apps are available)
-
----
 
 ## Project Structure
 
