@@ -1,6 +1,6 @@
 """
 Plant Disease Detection - CNN Model Training Script
-This script trains a CNN model using the PlantVillage-style dataset.
+Trains a CNN model using PlantVillage dataset for plant disease classification.
 """
 
 import numpy as np
@@ -12,35 +12,27 @@ from PIL import Image
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 
-# Set random seeds for reproducibility
 np.random.seed(42)
 tf.random.set_seed(42)
 
-# Use tf.keras for compatibility
 keras = tf.keras
 
 def load_dataset_from_folder(dataset_dir='PlantVillage/PlantVillage', img_size=128, max_samples_per_class=1000):
     """
-    Load images from PlantVillage dataset folder organized by class.
+    Load images from PlantVillage dataset folder.
     Maps PlantVillage classes to 4 categories: Healthy, Early Blight, Late Blight, Bacterial Spot
-    Falls back to synthetic data if dataset folder doesn't exist.
     """
     X_train = []
     y_train = []
     
-    # Map PlantVillage classes to 4 categories
     class_mapping = {
-        # Healthy (class 0)
         'Pepper__bell___healthy': 0,
         'Potato___healthy': 0,
         'Tomato_healthy': 0,
-        # Early Blight (class 1)
         'Potato___Early_blight': 1,
         'Tomato_Early_blight': 1,
-        # Late Blight (class 2)
         'Potato___Late_blight': 2,
         'Tomato_Late_blight': 2,
-        # Bacterial Spot (class 3)
         'Pepper__bell___Bacterial_spot': 3,
         'Tomato_Bacterial_spot': 3
     }
@@ -61,18 +53,15 @@ def load_dataset_from_folder(dataset_dir='PlantVillage/PlantVillage', img_size=1
     subdirs = [d for d in os.listdir(dataset_dir) if os.path.isdir(os.path.join(dataset_dir, d))]
     
     for subdir in subdirs:
-        # Check if this subdirectory maps to one of our classes
         if subdir not in class_mapping:
             continue
         
         class_idx = class_mapping[subdir]
         class_dir = os.path.join(dataset_dir, subdir)
         
-        # Get all image files
         image_files = [f for f in os.listdir(class_dir) 
                       if f.lower().endswith(('.jpg', '.jpeg', '.png', '.JPG'))]
         
-        # Limit samples per class to balance the dataset
         if len(image_files) > max_samples_per_class:
             import random
             random.shuffle(image_files)
@@ -86,14 +75,10 @@ def load_dataset_from_folder(dataset_dir='PlantVillage/PlantVillage', img_size=1
                 img_path = os.path.join(class_dir, img_file)
                 img = Image.open(img_path)
                 
-                # Convert to RGB if needed
                 if img.mode != 'RGB':
                     img = img.convert('RGB')
                 
-                # Resize
                 img = img.resize((img_size, img_size))
-                
-                # Convert to array and normalize
                 img_array = np.array(img).astype('float32') / 255.0
                 
                 X_train.append(img_array)
@@ -112,17 +97,14 @@ def load_dataset_from_folder(dataset_dir='PlantVillage/PlantVillage', img_size=1
     X_train = np.array(X_train)
     y_train = np.array(y_train)
     
-    # Print class distribution
     print("\nClass distribution:")
     for i, name in enumerate(class_names):
         count = np.sum(y_train == i)
         print(f"  {name}: {count} images")
     
-    # Convert to categorical
     num_classes = len(class_names)
     y_train = utils.to_categorical(y_train, num_classes)
     
-    # Split into train and validation
     split_idx = int(0.8 * len(X_train))
     indices = np.random.permutation(len(X_train))
     train_indices = indices[:split_idx]
@@ -136,7 +118,7 @@ def load_dataset_from_folder(dataset_dir='PlantVillage/PlantVillage', img_size=1
     return (X_train, y_train), (X_val, y_val), class_names
 
 def generate_synthetic_data(num_samples=1000, img_size=128):
-    """Generate synthetic plant leaf images for training (fallback)."""
+    """Generate synthetic plant leaf images for training if dataset not found."""
     print("Generating synthetic training data...")
     
     X_train = []
@@ -190,7 +172,7 @@ def generate_synthetic_data(num_samples=1000, img_size=128):
     return (X_train, y_train), (X_val, y_val), class_names
 
 def create_cnn_model(input_shape=(128, 128, 3), num_classes=4):
-    """Create a CNN model for plant disease classification."""
+    """Create CNN model for plant disease classification."""
     model = keras.Sequential([
         layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape),
         layers.MaxPooling2D(2, 2),
@@ -225,26 +207,22 @@ def main():
     batch_size = 32
     epochs = 10
     
-    # Load dataset from PlantVillage folder
     result = load_dataset_from_folder(
         dataset_dir='PlantVillage/PlantVillage',
         img_size=img_size,
-        max_samples_per_class=1000  # Limit to 1000 samples per class for faster training
+        max_samples_per_class=1000
     )
     
-    # Unpack result (always returns 3 items now)
     (X_train, y_train), (X_val, y_val), class_names = result
     
     print(f"\nTraining samples: {len(X_train)}")
     print(f"Validation samples: {len(X_val)}")
     print(f"Image shape: {X_train[0].shape}")
     
-    # Create model
     print("\nCreating CNN model...")
     model = create_cnn_model(input_shape=(img_size, img_size, 3), num_classes=num_classes)
     model.summary()
     
-    # Data augmentation for better generalization
     print("\nSetting up data augmentation...")
     datagen = ImageDataGenerator(
         rotation_range=20,
@@ -256,7 +234,6 @@ def main():
     )
     datagen.fit(X_train)
     
-    # Train model with data augmentation
     print("\nTraining model with data augmentation...")
     history = model.fit(
         datagen.flow(X_train, y_train, batch_size=batch_size),
@@ -266,13 +243,11 @@ def main():
         verbose=1
     )
     
-    # Evaluate model
     print("\nEvaluating model...")
     val_loss, val_accuracy = model.evaluate(X_val, y_val, verbose=0)
     print(f"Validation Loss: {val_loss:.4f}")
     print(f"Validation Accuracy: {val_accuracy:.4f} ({val_accuracy*100:.2f}%)")
     
-    # Detailed evaluation metrics
     print("\nGenerating detailed evaluation metrics...")
     y_pred = model.predict(X_val, verbose=0)
     y_pred_classes = np.argmax(y_pred, axis=1)
@@ -285,7 +260,6 @@ def main():
     cm = confusion_matrix(y_true_classes, y_pred_classes)
     print(cm)
     
-    # Print per-class accuracy
     print("\nPer-class Accuracy:")
     for i, name in enumerate(class_names):
         class_mask = y_true_classes == i
@@ -293,12 +267,10 @@ def main():
             class_acc = np.sum((y_pred_classes[class_mask] == i)) / np.sum(class_mask)
             print(f"  {name}: {class_acc:.4f} ({class_acc*100:.2f}%)")
     
-    # Save model
     model_path = 'model.h5'
     model.save(model_path)
     print(f"\n[SUCCESS] Model saved to {model_path}")
     
-    # Save class names
     with open('class_names.txt', 'w') as f:
         for name in class_names:
             f.write(name + '\n')

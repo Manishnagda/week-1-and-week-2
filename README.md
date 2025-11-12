@@ -61,6 +61,12 @@ python train_model.py
 4. Run the app:  
 
 ```bash
+streamlit run app.py
+```
+
+Or alternatively:
+
+```bash
 streamlit run main.py
 ```
 
@@ -70,7 +76,8 @@ streamlit run main.py
 
 ```
 week-1-and-week-2/
-├── main.py                    # Streamlit web application
+├── app.py                     # Streamlit web application (main entry point)
+├── main.py                    # Alternative Streamlit web application
 ├── train_model.py             # CNN model training script with data augmentation
 ├── create_dataset.py          # Script to generate synthetic dataset subset
 ├── class_names.txt            # Class labels (generated after training)
