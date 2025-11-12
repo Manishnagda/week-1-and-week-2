@@ -187,7 +187,8 @@ def load_model():
             break
     
     if not model_path:
-        st.warning("Model file not found. Please run train_model.py first to train the model.")
+        st.warning("⚠️ Model file not found. Please ensure model.h5 is in the repository.")
+        st.info("💡 For Streamlit Cloud deployment, make sure model.h5 is committed to the repository.")
         return None
     
     try:
