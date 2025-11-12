@@ -39,6 +39,7 @@ Thumbs.db
 
 # Model files (too large for GitHub)
 model.h5
+model/
 *.h5
 *.pkl
 *.pth

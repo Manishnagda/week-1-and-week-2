@@ -38,37 +38,80 @@ This is an AI-powered plant disease detection system that uses Convolutional Neu
 
 https://github.com/Manishnagda/week-1-and-week-2
 
-## How to Run:
+## Setup Instructions
 
-1. Install dependencies:  
+### Prerequisites
+
+- Python 3.8 or higher
+- pip package manager
+- (Optional) Kaggle API credentials for downloading dataset
+
+### Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/Manishnagda/week-1-and-week-2.git
+cd week-1-and-week-2
+```
+
+### Step 2: Install Dependencies
+
+Create a virtual environment (recommended):
+
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+Install required packages:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-2. (Optional) Generate dataset if not present:
+### Step 3: Dataset Setup
 
-```bash
-python create_dataset.py
-```
+The project uses the PlantVillage dataset. You have two options:
 
-3. Train the model (if model.h5 doesn't exist):
+**Option A: Use Existing Dataset**
+- If you already have the PlantVillage dataset, place it in the `PlantVillage/PlantVillage/` folder
+- The dataset should be organized by class folders (e.g., `Tomato_healthy/`, `Potato___Early_blight/`, etc.)
+
+**Option B: Download Dataset**
+- Download from [Kaggle PlantVillage Dataset](https://www.kaggle.com/datasets/emmarex/plantdisease)
+- Extract and place in `PlantVillage/PlantVillage/` folder
+
+**Option C: Generate Synthetic Data (for testing)**
+- If dataset is not available, the training script will automatically generate synthetic data
+- Or run: `python create_dataset.py`
+
+### Step 4: Train the Model
+
+Train the CNN model on the PlantVillage dataset:
 
 ```bash
 python train_model.py
 ```
 
-4. Run the app:  
+This will:
+- Load images from the PlantVillage dataset
+- Train a CNN model with data augmentation
+- Save the model to `model/plant_disease_model.h5`
+- Generate evaluation metrics (accuracy, precision, recall, F1-score)
+- Save class names to `class_names.txt`
+
+**Note:** Training may take 10-30 minutes depending on your hardware and dataset size.
+
+### Step 5: Run the Streamlit Web Application
+
+Start the web app:
 
 ```bash
 streamlit run app.py
 ```
 
-Or alternatively:
+The app will open in your default web browser at `http://localhost:8501`
 
-```bash
-streamlit run main.py
-```
+**Alternative:** You can also run `streamlit run main.py` (both apps are available)
 
 ---
 
@@ -76,7 +119,7 @@ streamlit run main.py
 
 ```
 week-1-and-week-2/
-├── app.py                     # Streamlit web application (main entry point)
+├── app.py                     # Main Streamlit web application
 ├── main.py                    # Alternative Streamlit web application
 ├── train_model.py             # CNN model training script with data augmentation
 ├── create_dataset.py          # Script to generate synthetic dataset subset
@@ -84,10 +127,16 @@ week-1-and-week-2/
 ├── requirements.txt           # Python dependencies
 ├── .gitignore                # Git ignore file
 ├── README.md                  # Project documentation
-
+├── model/                     # Model directory (created after training)
+│   └── plant_disease_model.h5 # Trained CNN model
+└── PlantVillage/              # Dataset folder (not in git)
+    └── PlantVillage/          # Actual dataset images organized by class
 ```
 
-**Note**: `model.h5` and dataset folders are excluded from git due to size. You need to train the model or download it separately.
+**Note**: 
+- `model/` folder and `model.h5` are excluded from git due to size
+- `PlantVillage/` dataset folder is excluded from git
+- You need to train the model or download it separately
 
 ## Model Details
 
@@ -114,20 +163,46 @@ week-1-and-week-2/
 
 ## Model Performance
 
-After training, the model provides:
-- Validation accuracy metrics
-- Per-class precision, recall, and F1-scores
-- Confusion matrix for detailed analysis
-- Classification report with comprehensive statistics
+After training, the model provides comprehensive evaluation metrics:
+
+- **Validation Accuracy**: Overall model accuracy on validation set
+- **Per-class Metrics**: Precision, recall, and F1-score for each disease class
+- **Confusion Matrix**: Detailed analysis of classification performance
+- **Classification Report**: Complete statistics including support for each class
+
+### Expected Performance
+
+With the PlantVillage dataset and proper training:
+- Validation accuracy typically ranges from 85-95%
+- Model performs well on clear, well-lit images
+- Best results with images similar to training data distribution
 
 ---
 
-## Usage Tips
+## Using the Web Application
 
-- Upload clear, well-lit images of plant leaves for best results
+### How to Use
+
+1. **Upload an Image**: Click the upload button and select a clear image of a plant leaf
+2. **Wait for Analysis**: The CNN model will analyze the image (takes 2-3 seconds)
+3. **View Results**: See the prediction, confidence score, disease description, and detailed probability breakdown
+
+### Tips for Best Results
+
+- Use clear, well-lit images of plant leaves
+- Ensure the leaf is in focus and centered
 - Supported formats: JPG, JPEG, PNG
-- The model works best with images similar to the training data
+- The model works best with images similar to the PlantVillage training data
 - For production use, ensure the model is trained on a comprehensive dataset
+
+### Example Output
+
+The app displays:
+- **Predicted Disease**: Name of the detected disease or "Healthy"
+- **Confidence Score**: Percentage confidence in the prediction
+- **Disease Description**: Helpful information about the detected disease and treatment recommendations
+- **Probability Breakdown**: Detailed probabilities for all disease classes
+- **Visual Charts**: Bar chart showing probability distribution
 
 ## Future Enhancements
 

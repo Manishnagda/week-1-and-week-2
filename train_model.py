@@ -267,9 +267,16 @@ def main():
             class_acc = np.sum((y_pred_classes[class_mask] == i)) / np.sum(class_mask)
             print(f"  {name}: {class_acc:.4f} ({class_acc*100:.2f}%)")
     
-    model_path = 'model.h5'
+    # Create model directory if it doesn't exist
+    os.makedirs('model', exist_ok=True)
+    
+    model_path = 'model/plant_disease_model.h5'
     model.save(model_path)
     print(f"\n[SUCCESS] Model saved to {model_path}")
+    
+    # Also save to root for backward compatibility
+    model.save('model.h5')
+    print(f"[SUCCESS] Model also saved to model.h5 (backward compatibility)")
     
     with open('class_names.txt', 'w') as f:
         for name in class_names:

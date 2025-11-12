@@ -12,6 +12,14 @@ import pandas as pd
 
 keras = tf.keras
 
+# Disease descriptions for better user understanding
+DISEASE_DESCRIPTIONS = {
+    'Healthy': 'Your plant appears to be healthy! No signs of disease detected. Continue regular care and monitoring.',
+    'Early Blight': 'Early blight detected. This fungal disease causes dark spots on leaves. Apply fungicide and remove affected leaves.',
+    'Late Blight': 'Late blight detected. This is a serious fungal disease. Apply copper-based fungicide immediately and improve air circulation.',
+    'Bacterial Spot': 'Bacterial spot detected. This bacterial disease causes small dark spots. Remove affected leaves and apply copper-based bactericide.'
+}
+
 st.set_page_config(
     page_title="Plant Disease Detection",
     page_icon="🌿",
@@ -153,7 +161,7 @@ st.markdown("""
 
 st.markdown("""
     <div style="text-align: center; margin-bottom: 2rem; padding: 2rem 0; background: linear-gradient(135deg, #f0f7f0 0%, #e8f5e9 100%); border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-        <h1 class="main-header" style="color: #2e7d32 !important;">🌿 Plant Disease Detection</h1>
+        <h1 class="main-header" style="color: #2e7d32 !important;">🌿 Plant Disease Detector — Check Your Crop Health</h1>
         <p class="sub-header" style="color: #4a5568 !important;">AI-Powered Plant Health Analysis System</p>
     </div>
 """, unsafe_allow_html=True)
@@ -169,12 +177,21 @@ def load_class_names():
 
 @st.cache_resource
 def load_model():
-    if not os.path.exists('model.h5'):
-        st.warning("Model file (model.h5) not found. Please run train_model.py first.")
+    # Check for model in model/ folder first, then root directory
+    model_paths = ['model/plant_disease_model.h5', 'model/model.h5', 'model.h5']
+    
+    model_path = None
+    for path in model_paths:
+        if os.path.exists(path):
+            model_path = path
+            break
+    
+    if not model_path:
+        st.warning("Model file not found. Please run train_model.py first to train the model.")
         return None
     
     try:
-        model = keras.models.load_model('model.h5')
+        model = keras.models.load_model(model_path)
         return model
     except Exception as e:
         st.error(f"Error loading model: {str(e)}")
@@ -242,6 +259,11 @@ if uploaded_file is not None:
                     confidence_percent = confidence * 100
                     st.markdown(f'<p class="confidence-text">Confidence: <strong>{confidence_percent:.2f}%</strong></p>', unsafe_allow_html=True)
                     st.progress(float(confidence))
+                    
+                    # Display disease description
+                    predicted_disease = class_names[predicted_class_idx]
+                    if predicted_disease in DISEASE_DESCRIPTIONS:
+                        st.info(f"💡 **Description:** {DISEASE_DESCRIPTIONS[predicted_disease]}")
                     
                     st.markdown('</div>', unsafe_allow_html=True)
                     
