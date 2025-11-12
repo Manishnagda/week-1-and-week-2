@@ -36,3 +36,18 @@ Thumbs.db
 
 # Streamlit
 .streamlit/
+
+# Model files (too large for GitHub)
+model.h5
+*.h5
+*.pkl
+*.pth
+
+# Large dataset folders
+PlantVillage/
+Dataset/
+dataset/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb

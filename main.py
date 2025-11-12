@@ -10,7 +10,6 @@ from PIL import Image
 import os
 import pandas as pd
 
-# Use tf.keras for compatibility
 keras = tf.keras
 
 # Page configuration
@@ -177,52 +176,44 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Load class names
 @st.cache_data
 def load_class_names():
     """Load class names from file."""
     if os.path.exists('class_names.txt'):
         with open('class_names.txt', 'r') as f:
-            names = [line.strip() for line in f.readlines() if line.strip()]  # Remove empty lines
-            return names if names else ['Healthy', 'Disease A (Spots)', 'Disease B (Yellow Patches)', 'Disease C (Brown Edges)']
-    else:
-        # Default class names if file doesn't exist
-        return ['Healthy', 'Disease A (Spots)', 'Disease B (Yellow Patches)', 'Disease C (Brown Edges)']
+            names = [line.strip() for line in f.readlines() if line.strip()]
+            if names:
+                return names
+    return ['Healthy', 'Early Blight', 'Late Blight', 'Bacterial Spot']
 
-# Load model
 @st.cache_resource
 def load_model():
     """Load the trained CNN model."""
-    if os.path.exists('model.h5'):
-        try:
-            model = keras.models.load_model('model.h5')
-            return model
-        except Exception as e:
-            st.error(f"Error loading model: {str(e)}")
-            return None
-    else:
+    if not os.path.exists('model.h5'):
         st.warning("⚠️ Model file (model.h5) not found. Please run train_model.py first.")
         return None
+    
+    try:
+        model = keras.models.load_model('model.h5')
+        return model
+    except Exception as e:
+        st.error(f"Error loading model: {str(e)}")
+        return None
 
-# Preprocess image
 def preprocess_image(image, target_size=(128, 128)):
     """Preprocess image for model prediction."""
-    # Resize image
     image = image.resize(target_size)
-    # Convert to array
     img_array = np.array(image)
-    # Normalize to [0, 1]
+    
     if img_array.max() > 1:
         img_array = img_array.astype('float32') / 255.0
-    # Add batch dimension
+    
     img_array = np.expand_dims(img_array, axis=0)
     return img_array
 
-# Load model and class names
 model = load_model()
 class_names = load_class_names()
 
-# Upload section with better styling
 st.markdown('<div class="upload-area">', unsafe_allow_html=True)
 uploaded_file = st.file_uploader(
     "📤 Upload a plant leaf image for analysis",
@@ -243,26 +234,19 @@ if uploaded_file is not None:
     
     with col2:
         if model is not None:
-            # Preprocess and predict
             with st.spinner("🔍 Analyzing image with AI..."):
                 try:
-                    # Preprocess image
                     processed_image = preprocess_image(image)
-                    
-                    # Make prediction
                     predictions = model.predict(processed_image, verbose=0)
                     predicted_class_idx = np.argmax(predictions[0])
                     confidence = predictions[0][predicted_class_idx]
                     
-                    # Determine box class based on prediction
                     box_class = "result-box-healthy" if predicted_class_idx == 0 else "result-box-disease"
                     text_class = "" if predicted_class_idx == 0 else "prediction-text-disease"
                     
-                    # Display results
                     st.markdown(f'<div class="result-box {box_class}">', unsafe_allow_html=True)
                     st.markdown("### 📊 Analysis Results")
                     
-                    # Status badge
                     if predicted_class_idx == 0:
                         status_badge = '<span class="status-badge status-healthy">✅ HEALTHY</span>'
                         status_emoji = "✅"
@@ -272,16 +256,13 @@ if uploaded_file is not None:
                     
                     st.markdown(status_badge, unsafe_allow_html=True)
                     
-                    # Display prediction
                     st.markdown(
                         f'<div class="prediction-text {text_class}">{status_emoji} <strong>{class_names[predicted_class_idx]}</strong></div>',
                         unsafe_allow_html=True
                     )
                     
-                    # Display confidence with progress bar
                     confidence_percent = confidence * 100
                     st.markdown(f'<p class="confidence-text">🎯 Confidence: <strong>{confidence_percent:.2f}%</strong></p>', unsafe_allow_html=True)
-                    # Convert numpy float32 to Python float for Streamlit progress bar
                     st.progress(float(confidence))
                     
                     st.markdown('</div>', unsafe_allow_html=True)
@@ -291,7 +272,6 @@ if uploaded_file is not None:
         else:
             st.error("⚠️ Model not loaded. Please ensure model.h5 exists.")
     
-    # Show detailed probabilities in a separate section
     if model is not None:
         try:
             processed_image = preprocess_image(image)
@@ -301,23 +281,19 @@ if uploaded_file is not None:
             st.markdown("---")
             st.markdown("### 📈 Detailed Probability Analysis")
             
-            # Ensure arrays have the same length
             num_classes = len(predictions[0])
             prob_values = [p * 100 for p in predictions[0]]
             display_names = class_names[:num_classes] if len(class_names) >= num_classes else class_names
             
-            # Create a better visualization
             prob_data = {
                 'Class': display_names,
                 'Probability (%)': prob_values
             }
             prob_df = pd.DataFrame(prob_data)
             
-            # Display as columns for better visualization
             cols = st.columns(len(display_names))
             for idx, (col, name, prob) in enumerate(zip(cols, display_names, prob_values)):
                 with col:
-                    # Color based on probability
                     if prob > 50:
                         color = "#4caf50" if idx == predicted_class_idx else "#81c784"
                     else:
@@ -330,7 +306,6 @@ if uploaded_file is not None:
                         </div>
                     """, unsafe_allow_html=True)
             
-            # Bar chart
             st.markdown('<div class="chart-container">', unsafe_allow_html=True)
             st.bar_chart(prob_df.set_index('Class'), height=300)
             st.markdown('</div>', unsafe_allow_html=True)
@@ -338,7 +313,6 @@ if uploaded_file is not None:
         except Exception as e:
             pass
 
-# Instructions with better styling
 st.markdown("---")
 with st.expander("ℹ️ How to Use This App", expanded=False):
     st.markdown("""
@@ -365,7 +339,6 @@ with st.expander("ℹ️ How to Use This App", expanded=False):
     </div>
     """, unsafe_allow_html=True)
 
-# Footer with better styling
 st.markdown("""
     <div class="footer">
         <p>🌿 <strong>Plant Disease Detection System</strong></p>

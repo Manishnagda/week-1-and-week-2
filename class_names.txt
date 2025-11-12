@@ -1,4 +1,4 @@
 Healthy
-Disease A (Spots)
-Disease B (Yellow Patches)
-Disease C (Brown Edges)
+Early Blight
+Late Blight
+Bacterial Spot
