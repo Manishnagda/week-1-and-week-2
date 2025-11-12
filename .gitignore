@@ -39,11 +39,11 @@ Thumbs.db
 !.streamlit/config.toml
 
 # Model files (too large for GitHub)
-# For Streamlit Cloud deployment, you may need to include model.h5
-# Comment out the lines below if deploying to Streamlit Cloud
-model.h5
-model/
+# Temporarily allowing model.h5 for Streamlit Cloud deployment
+# model.h5
+# model/
 *.h5
+!model.h5
 *.pkl
 *.pth
 
