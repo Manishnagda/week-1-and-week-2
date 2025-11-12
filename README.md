@@ -84,7 +84,7 @@ week-1-and-week-2/
 ├── requirements.txt           # Python dependencies
 ├── .gitignore                # Git ignore file
 ├── README.md                  # Project documentation
-└── PROJECT_REVIEW_FEEDBACK.md # Review feedback document
+
 ```
 
 **Note**: `model.h5` and dataset folders are excluded from git due to size. You need to train the model or download it separately.
