@@ -11,8 +11,8 @@
   <body>
     <header class="site-header">
       <div class="container">
-        <h1>Plant Disease Detection</h1>
-        <p class="tagline">CNN model with Streamlit UI — static demo & instructions</p>
+        <h1>🌿 Plant Disease Detection</h1>
+        <p class="tagline">Streamlit-style static demo with local run instructions</p>
       </div>
     </header>
 
@@ -20,16 +20,22 @@
       <section class="card">
         <h2>Demo / Preview</h2>
         <p class="muted">Preview only — not a real prediction. GitHub Pages cannot run server code.</p>
-        <div class="uploader">
-          <label for="imageInput" class="btn">Upload Leaf Image</label>
-          <input id="imageInput" type="file" accept="image/*" />
+        <div class="layout-two">
+          <div>
+            <div class="uploader">
+              <label for="imageInput" class="btn">Upload Leaf Image</label>
+              <input id="imageInput" type="file" accept="image/*" />
+            </div>
+            <div id="preview" class="preview"></div>
+          </div>
+          <div>
+            <div class="actions">
+              <button id="predictBtn" class="btn primary">Predict</button>
+              <span id="predictHelp" class="muted"></span>
+            </div>
+            <div id="mockResult" class="mock-result" aria-live="polite"></div>
+          </div>
         </div>
-        <div id="preview" class="preview"></div>
-        <div class="actions">
-          <button id="predictBtn" class="btn primary">Predict</button>
-          <span id="predictHelp" class="muted"></span>
-        </div>
-        <div id="mockResult" class="mock-result" aria-live="polite"></div>
       </section>
 
       <section class="grid two">
@@ -52,7 +58,7 @@
             <p class="muted small">If the link 404s, train locally to generate the file.</p>
           </div>
           <h4>Class Labels</h4>
-          <ul id="classLabels" class="labels"></ul>
+          <div id="classLabels" class="labels"></div>
         </article>
 
         <article class="card">

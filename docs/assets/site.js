@@ -8,7 +8,7 @@
   const labelsEl = document.getElementById('classLabels');
 
   const LABELS = Array.isArray(window.__CLASS_LABELS__) ? window.__CLASS_LABELS__ : [];
-  labelsEl.innerHTML = LABELS.map(l => `<li>${l}</li>`).join('');
+  labelsEl.innerHTML = LABELS.map(l => `<span class="pill">${l}</span>`).join('');
 
   input.addEventListener('change', (e) => {
     const file = e.target.files?.[0];
