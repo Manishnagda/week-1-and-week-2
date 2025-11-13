@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#0f172a"/>
+  <circle cx="150" cy="100" r="70" fill="#65a30d" />
+  <text x="150" y="105" font-size="18" text-anchor="middle" fill="#e6edf3">Leaf 4</text>
+</svg>

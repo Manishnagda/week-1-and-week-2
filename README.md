@@ -247,3 +247,10 @@ This project is part of the Edunet Foundation - Shell-Edunet Skills4Future Inter
 
 🧠 *This project combines Week 1 and Week 2 work and uses the PlantVillage dataset for realistic model training and testing.*
 
+## Website
+
+- A static GitHub Pages site is included under `docs/`.
+- Open `docs/index.html` directly or enable GitHub Pages (Settings → Pages → Source: Deploy from a branch → Branch: `main`, Folder: `/docs`).
+- After enabling, the site will be available at `https://<username>.github.io/week-1-and-week-2/`.
+- The site provides image preview, mock predictions, and clear instructions to run the Streamlit app locally.
+

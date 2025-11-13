@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plant Disease Detection (CNN) — Demo Site</title>
+    <link rel="icon" href="assets/icons/leaf.svg" />
+    <link rel="stylesheet" href="assets/style.css" />
+    <meta name="description" content="Static GitHub Pages site for the Plant Disease Detection project (CNN + Streamlit)." />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <h1>Plant Disease Detection</h1>
+        <p class="tagline">CNN model with Streamlit UI — static demo & instructions</p>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h2>Demo / Preview</h2>
+        <p class="muted">Preview only — not a real prediction. GitHub Pages cannot run server code.</p>
+        <div class="uploader">
+          <label for="imageInput" class="btn">Upload Leaf Image</label>
+          <input id="imageInput" type="file" accept="image/*" />
+        </div>
+        <div id="preview" class="preview"></div>
+        <div class="actions">
+          <button id="predictBtn" class="btn primary">Predict</button>
+          <span id="predictHelp" class="muted"></span>
+        </div>
+        <div id="mockResult" class="mock-result" aria-live="polite"></div>
+      </section>
+
+      <section class="grid two">
+        <article class="card">
+          <h3>Model Information</h3>
+          <ul class="info-list">
+            <li><strong>Architecture:</strong> CNN (4 conv layers, pooling, dropout, dense)</li>
+            <li><strong>Input Size:</strong> 128×128 RGB</li>
+            <li><strong>Classes:</strong> Healthy, Early Blight, Late Blight, Bacterial Spot</li>
+            <li><strong>Model file:</strong> <code>model/plant_disease_model.h5</code> (excluded from git by default)</li>
+          </ul>
+          <div class="download">
+            <a
+              id="downloadModel"
+              class="btn"
+              href="https://raw.githubusercontent.com/Manishnagda/week-1-and-week-2/main/model/plant_disease_model.h5"
+              target="_blank"
+              rel="noopener"
+            >Download model (.h5)</a>
+            <p class="muted small">If the link 404s, train locally to generate the file.</p>
+          </div>
+          <h4>Class Labels</h4>
+          <ul id="classLabels" class="labels"></ul>
+        </article>
+
+        <article class="card">
+          <h3>Run Locally</h3>
+          <p>Run the Streamlit app for live predictions:</p>
+          <pre class="code-block"><code>python -m venv venv
+source venv/bin/activate   # macOS/Linux
+venv\Scripts\activate      # Windows
+pip install -r requirements.txt
+streamlit run main.py      # or: streamlit run app.py
+</code></pre>
+          <h4>Deploy Online (optional)</h4>
+          <ul>
+            <li>
+              <strong>Streamlit Cloud:</strong> Push your repo and deploy. Add secrets/files as needed.
+            </li>
+            <li>
+              <strong>Heroku:</strong> Containerize or use buildpacks, then run <code>streamlit run app.py</code> on web dyno.
+            </li>
+          </ul>
+          <p class="muted small">
+            This static site cannot run TensorFlow/Keras. For live inference, run Streamlit locally or deploy to a cloud service.
+          </p>
+        </article>
+      </section>
+
+      <section class="card">
+        <h3>Sample Predictions (Demo)</h3>
+        <p class="muted">Static examples — for illustration only.</p>
+        <div class="samples">
+          <figure>
+            <img src="sample-images/leaf1.svg" alt="Sample leaf 1" />
+            <figcaption>Healthy — 0.92</figcaption>
+          </figure>
+          <figure>
+            <img src="sample-images/leaf2.svg" alt="Sample leaf 2" />
+            <figcaption>Early Blight — 0.87</figcaption>
+          </figure>
+          <figure>
+            <img src="sample-images/leaf3.svg" alt="Sample leaf 3" />
+            <figcaption>Late Blight — 0.81</figcaption>
+          </figure>
+          <figure>
+            <img src="sample-images/leaf4.svg" alt="Sample leaf 4" />
+            <figcaption>Bacterial Spot — 0.78</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Convert Keras .h5 to TensorFlow.js (optional)</h3>
+        <p>You can convert the trained Keras model for client-side inference with TFJS:</p>
+        <pre class="code-block"><code>pip install tensorflowjs
+tensorflowjs_converter --input_format keras \
+  model/plant_disease_model.h5 \
+  docs/assets/tfjs-model
+</code></pre>
+        <p class="muted small">Once converted, wire TFJS in <code>assets/site.js</code> to run client-side predictions.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>
+          Project repo: <a href="https://github.com/Manishnagda/week-1-and-week-2" target="_blank" rel="noopener">week-1-and-week-2</a>
+          • Static site: <code>docs/</code>
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      window.__CLASS_LABELS__ = [
+        "Healthy",
+        "Early Blight",
+        "Late Blight",
+        "Bacterial Spot"
+      ];
+    </script>
+    <script src="assets/site.js"></script>
+  </body>
+  </html>
