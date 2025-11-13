@@ -55,3 +55,4 @@ dataset/
 # Jupyter Notebook
 .ipynb_checkpoints
 *.ipynb
+!Final_Project_Submission.ipynb
