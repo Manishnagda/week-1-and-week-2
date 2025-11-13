@@ -9,6 +9,12 @@
 
   const LABELS = Array.isArray(window.__CLASS_LABELS__) ? window.__CLASS_LABELS__ : [];
   labelsEl.innerHTML = LABELS.map(l => `<span class="pill">${l}</span>`).join('');
+  const DESC = {
+    'Healthy': 'Your plant appears to be healthy. Continue regular care and monitoring.',
+    'Early Blight': 'Early blight causes dark spots on leaves. Apply fungicide and remove affected leaves.',
+    'Late Blight': 'Late blight is serious. Apply copper-based fungicide and improve air circulation.',
+    'Bacterial Spot': 'Small dark spots indicate bacterial spot. Remove affected leaves and apply copper-based bactericide.'
+  };
 
   input.addEventListener('change', (e) => {
     const file = e.target.files?.[0];
@@ -24,15 +30,23 @@
     const bestIdx = argmax(probs);
     const bestLabel = LABELS[bestIdx] || 'Unknown';
     const bestScore = probs[bestIdx];
+    const statusClass = bestLabel === 'Healthy' ? 'status-healthy' : 'status-disease';
+    const statusText = bestLabel === 'Healthy' ? 'HEALTHY' : 'DISEASED';
+    const descText = DESC[bestLabel] || '';
 
     const rows = LABELS.map((l, i) => {
       const pct = (probs[i] * 100).toFixed(1);
       return `<div class="prob-row"><span>${l}</span><span>${pct}%</span></div>`;
     }).join('');
 
+    const pct = (bestScore * 100).toFixed(1);
     result.innerHTML = `
-      <div class="title">Predicted (mock): ${bestLabel} — ${(bestScore*100).toFixed(1)}%</div>
-      <div class="muted small">To get live predictions, run the Streamlit app locally or deploy it to Streamlit Cloud. See instructions below.</div>
+      <span class="status-badge ${statusClass}">${statusText}</span>
+      <div class="title">Predicted (mock): ${bestLabel}</div>
+      <p class="confidence-text">Confidence: <strong>${pct}%</strong></p>
+      <div class="progress"><div class="bar" style="width:${pct}%"></div></div>
+      <div class="muted small">${descText}</div>
+      <div class="muted small">To get live predictions, run the Streamlit app locally or deploy to Streamlit Cloud. See instructions below.</div>
       <div class="prob-table">${rows}</div>
     `;
   });

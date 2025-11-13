@@ -80,3 +80,16 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI
 @media (min-width: 900px) { .layout-two { grid-template-columns: 1.1fr 0.9fr; } }
 
 .pill { display: inline-block; padding: 0.25rem 0.5rem; border: 1px solid var(--border); border-radius: 999px; margin: 0.15rem 0.25rem; background: #fff; }
+.
+.hero { margin: 1rem 0; padding: 2rem; border-radius: 15px; background: linear-gradient(135deg, #f0f7f0 0%, #e8f5e9 100%); box-shadow: 0 4px 10px rgba(0,0,0,0.06); text-align: center; }
+.hero h1 { font-size: 2.1rem; margin: 0; color: #2e7d32; }
+.hero p { margin: 0.5rem 0 0; color: var(--muted); font-size: 1.05rem; }
+
+.status-badge { display: inline-block; padding: 0.5rem 1.5rem; border-radius: 25px; font-weight: 600; font-size: 0.95rem; color: #fff; margin: 0.25rem 0 0.5rem; }
+.status-healthy { background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%); }
+.status-disease { background: linear-gradient(135deg, #f44336 0%, #ef5350 100%); }
+.confidence-text { font-size: 1rem; color: #388e3c; font-weight: 600; }
+.progress { height: 10px; background: #eee; border-radius: 999px; overflow: hidden; margin: 0.5rem 0 1rem; border: 1px solid var(--border); }
+.progress > .bar { height: 100%; background: #4caf50; width: 0%; transition: width 0.3s ease; }
+
+.info-card { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); padding: 1rem; border-radius: 10px; border-left: 4px solid #ff9800; }
